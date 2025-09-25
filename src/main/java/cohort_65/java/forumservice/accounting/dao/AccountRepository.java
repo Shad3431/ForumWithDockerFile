@@ -10,4 +10,6 @@ public interface AccountRepository extends MongoRepository<Account, String> {
 
     Account save(Account account);
     Account findByLogin(String login);
+
+    void deleteByLogin(String login);
 }

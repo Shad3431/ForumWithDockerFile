@@ -8,6 +8,7 @@ import lombok.*;
 @AllArgsConstructor
 
 public class Account {
+    private String id;
 
     private String login;
 
@@ -17,4 +18,11 @@ public class Account {
 
     private String lastName;
 
+    public Account(String login, String password, String firstName, String lastName) {
+        this.login = login;
+        this.password = password;
+        this.firstName = firstName;
+        this.lastName = lastName;
+    }
 }
+

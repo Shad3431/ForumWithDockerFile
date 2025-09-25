@@ -4,6 +4,7 @@ import cohort_65.java.forumservice.accounting.dao.AccountRepository;
 import cohort_65.java.forumservice.accounting.dto.NewAccountDto;
 import cohort_65.java.forumservice.accounting.dto.AccountDto;
 import cohort_65.java.forumservice.accounting.dto.exception.LoginExistException;
+import cohort_65.java.forumservice.accounting.dto.exception.LoginNotFoundException;
 import cohort_65.java.forumservice.accounting.model.Account;
 import cohort_65.java.forumservice.post.dto.NewPostDto;
 import cohort_65.java.forumservice.post.dto.PostDto;
@@ -11,6 +12,9 @@ import cohort_65.java.forumservice.post.model.Post;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.PathVariable;
+
+import javax.security.auth.login.AccountNotFoundException;
 
 @Service
 @RequiredArgsConstructor
@@ -32,6 +36,17 @@ public class AccountServiceImpl implements AccountService {
         );
         account = accountRepository.save(account);
         return modelMapper.map(account, AccountDto.class);
+    }
+
+    @Override
+    public AccountDto deleteAccountByLogin(String login) {
+        Account existing = accountRepository.findByLogin(login);
+        if (existing == null) {
+            throw new LoginNotFoundException();
+        }
+        accountRepository.deleteByLogin(login);
+        return modelMapper.map(existing, AccountDto.class);
+
     }
 }
 
